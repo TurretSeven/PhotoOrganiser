@@ -40,7 +40,7 @@ def read_config() -> dict:
 
         :return: List containing source and destination folder paths
     """
-    config_file = open(r"//Users/steve/Dev/PhotoOrganiser/PhotoOrganiser.json", "rt")
+    config_file = open("PhotoOrganiser.json", "rt")
     path_list = json.loads(config_file.read())
 
     return path_list
