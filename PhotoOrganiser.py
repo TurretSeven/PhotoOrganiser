@@ -46,18 +46,14 @@ def read_config() -> dict:
     return path_list
 
 
-def main():
-    """ Run as program """
+def copy_files (root_source, root_destination):
+    """
+        Create the destination folder and copy the image files.
+    """
 
-    # Read the config file
-    path_list = read_config()
-
-    # Get the starting root directory
-    root_dir = path_list['SourcePath']
-    print(root_dir)
     file_ext = (".tif", "jpg", "jpeg")
 
-    for dir_name, sub_dir_list, file_list in os.walk(root_dir):
+    for dir_name, sub_dir_list, file_list in os.walk(root_source):
         for fname in file_list:
             if ".@__thumb" not in dir_name:
                 if ".DS_Store" not in fname and (fname.casefold().endswith(file_ext)):
@@ -68,12 +64,27 @@ def main():
                     ymd = get_ymd(source_file_path)
 
                     # Create destination folder
-                    destination_folder = os.path.join(path_list['DestinationPath'], ymd[0], ymd[1], ymd[2])
+                    destination_folder = os.path.join(root_destination, ymd[0], ymd[1], ymd[2])
                     Path(destination_folder).mkdir(parents=True, exist_ok=True)
 
                     # Copy file
                     print(f'Copying: {destination_folder}/{fname}')
                     shutil.copy2(source_file_path, destination_folder)
+
+    return None
+
+
+def main():
+    """ Run as program """
+
+    # Read the config file
+    path_list = read_config()
+
+    # Get the starting root directory
+    root_dir = path_list['SourcePath']
+    print(root_dir)
+
+    copy_files(root_dir, path_list['DestinationPath'])
     return None
 
 
