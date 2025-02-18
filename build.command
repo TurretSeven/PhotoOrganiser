@@ -4,4 +4,9 @@ cd -- "$(dirname "$BASH_SOURCE")"
 
 Clear
 
-pyinstaller --clean --noconfirm --noconsole --icon 'Photo Organiser.png' photo_organiser.py
+rm setup.py
+py2applet --make-setup photo_organiser.py /usr/local/bin/exiftool --iconfile PhotoOrganiser.icns
+
+
+rm -rf build dist
+python3 setup.py py2app -A --emulate-shell-environment 
